@@ -6,5 +6,5 @@
     --instances.type swesmith \
     --instances.path DOWNLOAD_INSTANCES_FROM_SWE_SMITH_GITHUB.json \
     --instances.shuffle=False \
-    --instances.deployment.type=modal \
+    --instances.deployment.type=local \
     --instances.deployment.startup_timeout=600.0 
