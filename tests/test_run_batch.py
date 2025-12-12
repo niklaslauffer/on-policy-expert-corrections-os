@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -86,6 +87,27 @@ def test_empty_instances_expert(test_data_sources_path: Path, tmp_path: Path):
     ]
     with pytest.raises(ValueError, match="No instances to run"):
         main(cmd)
+
+
+def test_fake_switching_config(tmp_path: Path):
+    config_path = Path("config/tests/fake_switching.yaml")
+    assert config_path.exists()
+    cmd = [
+        "run-batch",
+        "--config",
+        str(config_path),
+        "--output_dir",
+        str(tmp_path),
+        "--raise_exceptions",
+        "True",
+    ]
+    main(cmd)
+    expected_traj = tmp_path / "simple_test_problem" / "simple_test_problem.traj"
+    assert expected_traj.exists(), list(tmp_path.iterdir())
+    traj_data = json.loads(expected_traj.read_text())
+    actions = "".join(step.get("action", "") for step in traj_data.get("trajectory", []))
+    assert "MODEL1_PLANNING_STEP" in actions
+    assert "MODEL2_SWITCH_CONFIRMED" in actions
 
 
 # This doesn't work because we need to retrieve environment variables from the environment
