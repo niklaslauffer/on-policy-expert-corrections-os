@@ -270,7 +270,7 @@ class SwitchingCriteria(PydanticBaseModel):
 class ModelAgentConfig(PydanticBaseModel):
     """Configuration for a model and its associated agent settings"""
     
-    model: GenericAPIModelConfig = Field(
+    model: 'ModelConfig' = Field(
         description="Model configuration"
     )
     
